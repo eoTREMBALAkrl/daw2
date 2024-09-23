@@ -10,8 +10,11 @@
   "dependencies": {
     "@prisma/client": "^5.19.1",
     "express": "^4.21.0",
+    "fastify": "^4.0.0",
+    "fastify-type-provider-zod": "^2.0.0",
     "prisma": "^5.19.1",
-    "save": "^2.9.0"
+    "save": "^2.9.0",
+    "zod": "^3.23.8"
   },
   "keywords": [],
   "description": ""
