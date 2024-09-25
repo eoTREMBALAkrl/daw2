@@ -28,10 +28,10 @@ model remedio {
 }
 
 model prescricao {
-  id             Int       @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   usuario           usuario     @relation(fields: [idUsuario], references: [id])
   idUsuario        Int
-  remedio       remedio @relation(fields: [idRemedio], references: [id])
+  remedio       remedio         @relation(fields: [idRemedio], references: [id])
   idRemedio     Int
   observacao          String?
   frequencia Int
@@ -43,7 +43,7 @@ model prescricao {
 
 model historico {
   id             Int           @id @default(autoincrement())
-  prescricao   prescricao @relation(fields: [idPrescricao], references: [id])
+  prescricao   prescricao      @relation(fields: [idPrescricao], references: [id])
   idPrescricao Int
   dataAtual    DateTime
   status         Boolean       @default(true)
