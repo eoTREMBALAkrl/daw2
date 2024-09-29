@@ -14,7 +14,7 @@ export const updateHistoricoRoutes: FastifyPluginAsyncZod = async function (app)
     }, async (req) => {
         const { id, idPrescricao, dataAtual} = req.body
 
-        await prisma.remedio.update({
+        await prisma.historico.update({
             where: {
                 id
             },

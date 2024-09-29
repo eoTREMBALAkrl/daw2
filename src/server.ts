@@ -22,6 +22,9 @@ import {updateHistoricoRoutes} from "./routes/historico/update-historico";
 import {getHistoricoRoutes} from "./routes/historico/get-historico";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
+app.setValidatorCompiler(validatorCompiler)
+app.setSerializerCompiler(serializerCompiler)
+
 
 app.register(createUsuarioRoutes);
 app.register(deleteUsuarioRoutes);

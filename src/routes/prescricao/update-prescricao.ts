@@ -4,7 +4,7 @@ import { prisma } from "../../prisma";
 
 
 export const updatePrescricaoRoutes: FastifyPluginAsyncZod = async function (app) {
-    app.post("/prescricao", {
+    app.put("/prescricao", {
         schema: {
             body: z.object({
                 id: z.coerce.number().optional(),
