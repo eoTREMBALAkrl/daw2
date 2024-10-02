@@ -11,6 +11,15 @@ export const updateRemedioRoutes: FastifyPluginAsyncZod = async function (app) {
                 funcao: z.string().email().optional(),
                 dosagem: z.string().optional(),
             }),
+
+            response: {
+                200: z.object({
+                    message: z.string()
+                }).describe("Remedio atualizado com sucesso")
+            },
+            tags:["Remedio"],
+            summary: 'Atualizar remedio',
+            description: 'Rota de atualizar remedio',
         }
     }, async (req) => {
         const { id, nome, funcao, dosagem} = req.body
@@ -25,5 +34,9 @@ export const updateRemedioRoutes: FastifyPluginAsyncZod = async function (app) {
                 dosagem
             }
         });
+
+        return {
+            message: "Remedio atualizado com sucesso!"
+        }
     })
 };

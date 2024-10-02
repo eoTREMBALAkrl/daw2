@@ -10,15 +10,28 @@ export const createHistoricoRoutes: FastifyPluginAsyncZod = async function (app)
                 idPrescricao: z.number(),
                 dataAtual: z.date(),
             }),
+
+            response: {
+                200: z.object({
+                    message: z.string()
+                }).describe("Historico criado com sucesso")
+            },
+            tags:["Historico"],
+            summary: 'Criar historico',
+            description: 'Rota de criação de historico',
+
         }
     }, async (req) => {
         const { idPrescricao, dataAtual } = req.body;
 
-        await prisma.remedio.create({
+        await prisma.historico.create({
             data: {
                 idPrescricao,
                 dataAtual
             }
         });
+        return {
+            message: "Historico criado com sucesso!"
+        }
     });
 };

@@ -16,7 +16,7 @@ export const createUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
             response: {
                 201: z.object({
                     message: z.string()
-                }).describe('Esquema de resposta bem-sucedida'),
+                }).describe("usuário criado com sucesso"),
             },
             tags: ['Usuário'],
             summary: 'Criar usuário',

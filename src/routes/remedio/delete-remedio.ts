@@ -8,6 +8,16 @@ export const deleteRemedioRoutes: FastifyPluginAsyncZod = async function (app) {
             body: z.object({
                 id: z.coerce.number()
             }),
+            
+            response: {
+                200: z.object({
+                    message: z.string()
+                }).describe("Remedio deletado com sucesso")
+            },
+            tags:["Remedio"],
+            summary: 'Deletar remedio',
+            description: 'Rota de deletar remedio',
+            
         }
     }, async (req) => {
         const { id } = req.body
@@ -20,5 +30,8 @@ export const deleteRemedioRoutes: FastifyPluginAsyncZod = async function (app) {
                 status: false,
             }
         });
+        return {
+            message: "Remedio deletado com sucesso!"
+        }
     })
 };

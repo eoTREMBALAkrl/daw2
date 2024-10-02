@@ -10,6 +10,16 @@ export const updateHistoricoRoutes: FastifyPluginAsyncZod = async function (app)
                 idPrescricao: z.number().optional(),
                 dataAtual: z.date().optional(),
             }),
+
+            response: {
+                200: z.object({
+                    message: z.string()
+                }).describe("Historico atualizado com sucesso")
+            },
+            tags:["Historico"],
+            summary: 'atualizar historico',
+            description: 'Rota de atualizar historico',
+
         }
     }, async (req) => {
         const { id, idPrescricao, dataAtual} = req.body
@@ -23,5 +33,8 @@ export const updateHistoricoRoutes: FastifyPluginAsyncZod = async function (app)
                 dataAtual
             }
         });
+        return {
+            message: "Historico atualizado com sucesso!"
+        }
     })
 };

@@ -8,6 +8,16 @@ export const deletePrescricaoRoutes: FastifyPluginAsyncZod = async function (app
             body: z.object({
                 id: z.coerce.number()
             }),
+
+            response: {
+                200: z.object({
+                    message: z.string()
+                }).describe("Prescricao deletado com sucesso")
+            },
+            tags:["Prescricao"],
+            summary: 'Deletar prescricao',
+            description: 'Rota de deletar prescricao',
+
         }
     }, async (req) => {
         const { id } = req.body
@@ -20,5 +30,8 @@ export const deletePrescricaoRoutes: FastifyPluginAsyncZod = async function (app
                 status: false,
             }
         });
+        return {
+            message: "Prescricao deletado com sucesso!"
+        }
     })
 };

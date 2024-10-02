@@ -8,6 +8,16 @@ export const deleteHistoricoRoutes: FastifyPluginAsyncZod = async function (app)
             body: z.object({
                 id: z.coerce.number()
             }),
+
+            response: {
+                200: z.object({
+                    message: z.string()
+                }).describe("Historico deletado com sucesso")
+            },
+            tags:["Historico"],
+            summary: 'deletar historico',
+            description: 'Rota de deletar historico',
+
         }
     }, async (req) => {
         const { id } = req.body
@@ -20,5 +30,9 @@ export const deleteHistoricoRoutes: FastifyPluginAsyncZod = async function (app)
                 status: false,
             }
         });
+
+        return {
+            message: "Historico deletado com sucesso!"
+        }
     })
 };

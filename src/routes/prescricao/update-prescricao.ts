@@ -15,6 +15,16 @@ export const updatePrescricaoRoutes: FastifyPluginAsyncZod = async function (app
                 dataInicio: z.date().optional(),
                 dataFim: z.date().optional(),
             }),
+
+            response: {
+                200: z.object({
+                    message: z.string()
+                }).describe("Prescricao atualizado com sucesso")
+            },
+            tags:["Prescricao"],
+            summary: 'atualizar prescricao',
+            description: 'Rota de atualizar prescricao',
+
         }
     }, async (req) => {
         const { id,idUsuario, idRemedio, observacao,frequencia,dataInicio,dataFim } = req.body;
@@ -32,5 +42,8 @@ export const updatePrescricaoRoutes: FastifyPluginAsyncZod = async function (app
                 dataFim
             }
         });
+        return {
+            message: "Prescricao atualizado com sucesso!"
+        }
     });
 };

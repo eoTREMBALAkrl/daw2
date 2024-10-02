@@ -14,6 +14,16 @@ export const createPrescricaoRoutes: FastifyPluginAsyncZod = async function (app
                 dataInicio: z.date(),
                 dataFim: z.date(),
             }),
+
+            response: {
+                200: z.object({
+                    message: z.string()
+                }).describe("Prescricao criado com sucesso")
+            },
+            tags:["Prescricao"],
+            summary: 'Criar prescricao',
+            description: 'Rota de criação de prescricao',
+
         }
     }, async (req) => {
         const { idUsuario, idRemedio, observacao,frequencia,dataInicio,dataFim } = req.body;
@@ -28,5 +38,8 @@ export const createPrescricaoRoutes: FastifyPluginAsyncZod = async function (app
                 dataFim
             }
         });
+        return {
+            message: "Prescricao criado com sucesso!"
+        }
     });
 };
