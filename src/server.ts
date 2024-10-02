@@ -1,5 +1,6 @@
 import fastify from "fastify";
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
+import { setupSwagger } from "./swaggerConfig"; 
 
 import { createUsuarioRoutes } from "./routes/usuario/create-usuario";
 import { deleteUsuarioRoutes } from "./routes/usuario/delete-usuario";
@@ -22,8 +23,9 @@ import {updateHistoricoRoutes} from "./routes/historico/update-historico";
 import {getHistoricoRoutes} from "./routes/historico/get-historico";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
-app.setValidatorCompiler(validatorCompiler)
-app.setSerializerCompiler(serializerCompiler)
+app.setValidatorCompiler(validatorCompiler);
+app.setSerializerCompiler(serializerCompiler);
+setupSwagger(app);
 
 
 app.register(createUsuarioRoutes);

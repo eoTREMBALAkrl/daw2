@@ -12,6 +12,16 @@ export const createUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
                 senha: z.string(),
                 data: z.coerce.date(),
             }),
+
+            response: {
+                201: z.object({
+                    message: z.string()
+                }).describe('Esquema de resposta bem-sucedida'),
+            },
+            tags: ['Usuário'],
+            summary: 'Criar usuário',
+            description: 'Rota de criação de usuário',
+
         }
     }, async (req) => {
         const { nome, email, senha, data } = req.body
@@ -24,5 +34,10 @@ export const createUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
                 data
             }
         });
+
+        return {
+            message: "Usuário criado com sucesso!"
+        }
+
     })
 };

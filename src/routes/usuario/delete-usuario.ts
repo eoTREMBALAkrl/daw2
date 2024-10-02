@@ -8,6 +8,17 @@ export const deleteUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
             body: z.object({
                 id: z.coerce.number()
             }),
+
+            response: {
+                201: z.object({
+                    message: z.string()
+                }).describe("Usuário deletado com sucesso!")
+            },
+
+            tags:["Usuário"],
+            summary: 'Deletar usuário',
+            description: 'Rota de deletar usuário',
+
         }
     }, async (req) => {
         const { id } = req.body
@@ -20,5 +31,10 @@ export const deleteUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
                 status: false,
             }
         });
+
+        return {
+            message: "Usuário deletado com sucesso"
+        };
+
     })
 };

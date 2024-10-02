@@ -12,6 +12,16 @@ export const updateUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
                 senha: z.string().optional(),
                 data: z.coerce.date().optional(),
             }),
+
+            response: {
+                201: z.object({
+                    message: z.string()
+                }).describe("Usuário atualizado com sucesso!")
+            },
+            tags:["Usuário"],
+            summary: 'Atualizar usuário',
+            description: 'Rota de atualizar usuário',
+
         }
     }, async (req) => {
         const { id, nome, email, senha, data } = req.body
@@ -27,5 +37,10 @@ export const updateUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
                 data
             }
         });
+
+        return {
+            message: "Usuário atualizado com sucesso"
+        };
+
     })
 };

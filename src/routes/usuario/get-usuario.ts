@@ -3,8 +3,28 @@ import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { prisma } from '../../prisma';
 
 export const getUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
-    app.get("/usuario", async () => {
-        const usuario = await prisma.usuario.findMany();
+    app.get("/usuario",{
+        schema:{
+            response:{
+                200: z.object({
+                    usuario: z.array(z.object({
+                        id: z.number(),
+                        nome: z.string(),
+                        email: z.string(),
+                        status: z.boolean()
+                    }))
+                }).describe("Lista de usuários")
+            },
+            tags: ["Usuário"],
+            summary: "Listar usuário",
+            description: "Rota de listar usuário"
+        }
+    }, async () => {
+        const usuario = await prisma.usuario.findMany({
+            where: {
+                status: true
+            }
+        });
 
         return {
             usuario
