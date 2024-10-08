@@ -1,11 +1,13 @@
 import fastify from "fastify";
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
-import { setupSwagger } from "./swaggerConfig"; 
+import { setupSwagger } from "./config/swaggerConfig"; 
 
 import { createUsuarioRoutes } from "./routes/usuario/create-usuario";
 import { deleteUsuarioRoutes } from "./routes/usuario/delete-usuario";
 import { updateUsuarioRoutes } from "./routes/usuario/update-usuario";
 import { getUsuarioRoutes } from "./routes/usuario/get-usuario";
+import { loginUsuarioRoutes } from "./routes/usuario/login-usuario";
+import { logoutUsuarioRoutes } from "./routes/usuario/logout-usuario";
 
 import {createRemedioRoutes} from "./routes/remedio/create-remedio";
 import {deleteRemedioRoutes} from "./routes/remedio/delete-remedio";
@@ -32,6 +34,8 @@ app.register(createUsuarioRoutes);
 app.register(deleteUsuarioRoutes);
 app.register(updateUsuarioRoutes);
 app.register(getUsuarioRoutes);
+app.register(loginUsuarioRoutes);
+app.register(logoutUsuarioRoutes)
 
 app.register(createRemedioRoutes);
 app.register(deleteRemedioRoutes);
