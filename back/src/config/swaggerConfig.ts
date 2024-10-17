@@ -22,12 +22,10 @@ export async function setupSwagger(app: FastifyInstance) {
     transform: jsonSchemaTransform,
   });
 
-  // Configurando Swagger UI
-
   app.register(fastifySwaggerUI, {
     routePrefix: '/documentation',
     uiConfig: {
-      docExpansion: 'none', // Rotas retraídas por padrão
+      docExpansion: 'none', 
       deepLinking: false,
     },
   });

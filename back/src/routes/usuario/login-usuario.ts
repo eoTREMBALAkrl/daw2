@@ -9,8 +9,8 @@ export const loginUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
     app.post("/login", {
         schema: {
             body: z.object({
-                email: z.string().email().describe('E-mail do usuário'),
-                senha: z.string().describe('Senha do usuário'),
+                email: z.string().email(),
+                senha: z.string(),
             }),
             response: {
                 200: z.object({
@@ -18,7 +18,6 @@ export const loginUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
                     token: z.string()
                 }).describe('Esquema de resposta bem-sucedida'),
                 404: z.string().describe('Usuário não encontrado'),
-                401: z.string().describe('Usuário não encontrado')
             },
             tags: ['Autenticação'],
             summary: "Login de usuário",

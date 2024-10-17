@@ -16,6 +16,8 @@ model usuario {
   data     DateTime
   status        Boolean         @default(true)
   prescricao prescricao[]
+  paciente      paciente_responsavel[]      @relation("relacaop")
+  responsavel  paciente_responsavel[]    @relation("relacaor")
 }
 
 model remedio {
@@ -47,4 +49,13 @@ model historico {
   idPrescricao Int
   dataAtual    DateTime
   status         Boolean       @default(true)
+}
+
+model paciente_responsavel {
+  idPaciente     Int
+  idResponsavel Int
+  paciente      usuario @relation("relacaop", fields: [idPaciente], references: [id])
+  responsavel  usuario @relation("relacaor", fields: [idResponsavel], references: [id])
+  @@id([idPaciente, idResponsavel])
+  @@unique([idPaciente, idResponsavel])
 }
