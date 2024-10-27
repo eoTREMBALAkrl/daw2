@@ -27,6 +27,7 @@ import {getHistoricoRoutes} from "./routes/historico/get-historico";
 import { createResponsavelRoutes } from "./routes/responsavel/create-responsavel";
 import { deleteResponsavelRoutes } from "./routes/responsavel/delete-responsavel";
 
+
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
@@ -57,6 +58,8 @@ app.register(getHistoricoRoutes);
 
 app.register(createResponsavelRoutes);
 app.register(deleteResponsavelRoutes);
+
+
 
 
 app.listen({
