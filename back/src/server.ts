@@ -24,6 +24,9 @@ import {deleteHistoricoRoutes} from "./routes/historico/delete-historico";
 import {updateHistoricoRoutes} from "./routes/historico/update-historico";
 import {getHistoricoRoutes} from "./routes/historico/get-historico";
 
+import { createResponsavelRoutes } from "./routes/responsavel/create-responsavel";
+import { deleteResponsavelRoutes } from "./routes/responsavel/delete-responsavel";
+
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
@@ -52,6 +55,8 @@ app.register(deleteHistoricoRoutes);
 app.register(updateHistoricoRoutes);
 app.register(getHistoricoRoutes);
 
+app.register(createResponsavelRoutes);
+app.register(deleteResponsavelRoutes);
 
 
 app.listen({
