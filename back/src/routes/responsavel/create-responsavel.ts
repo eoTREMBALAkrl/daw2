@@ -4,9 +4,9 @@ import z from "zod";
 import { autenticarToken } from "../../middlewares/usuario-token";
 import { permissaoUsuario } from "../../middlewares/permissao-token";
 
-export const createResponsibleRoutes: FastifyPluginAsyncZod = async function (app) {
-    app.post("/responsible", {
-        preHandler: [permissaoUsuario, permissaoUsuario],
+export const createResponsavelRoutes: FastifyPluginAsyncZod = async function (app) {
+    app.post("/responsavel", {
+        preHandler: [autenticarToken, permissaoUsuario],
         schema: {
             body: z.object({
                 idPaciente: z.coerce.number(),

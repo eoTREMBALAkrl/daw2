@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { prisma } from '../../prisma';
+import { autenticarToken } from "../../middlewares/usuario-token";
+import { permissaoUsuario } from "../../middlewares/permissao-token";
 
 export const getHistoricoRoutes: FastifyPluginAsyncZod = async function (app) {
     app.get("/historico",{

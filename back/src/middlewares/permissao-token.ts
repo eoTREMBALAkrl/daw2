@@ -1,5 +1,7 @@
 import { z } from "zod";
-import { verificaResponsavel } from "../config/permissao";
+
+import { verificaResponsavel} from "../config/permissao";
+
 import { FastifyReply, FastifyRequest } from "fastify";
 import { verificaToken } from "../config/jwtConfig";
 
