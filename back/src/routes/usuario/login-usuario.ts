@@ -36,9 +36,9 @@ export const loginUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
             return res.status(404).send("Usuário não encontrado")
         }
 
-        const senhaDescriptografada = AES.decrypt(senha, env.CRYPTO_SECRET).toString(enc.Utf8);
+        const senhaDescriptografada = AES.decrypt(usuario.senha, env.CRYPTO_SECRET).toString(enc.Utf8);
 
-        if (!usuario || senhaDescriptografada !== usuario.senha) {
+        if (!usuario || senhaDescriptografada !== senha) {
             return res.status(401).send('Credenciais inválidas');
         }
       
