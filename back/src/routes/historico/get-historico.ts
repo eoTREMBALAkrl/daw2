@@ -6,6 +6,7 @@ import { permissaoUsuario } from "../../middlewares/permissao-token";
 
 export const getHistoricoRoutes: FastifyPluginAsyncZod = async function (app) {
     app.get("/historico",{
+        preHandler: [autenticarToken, permissaoUsuario],
         schema:{
             response:{
                 200: z.object({

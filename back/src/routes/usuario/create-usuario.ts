@@ -3,6 +3,8 @@ import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { prisma } from '../../prisma';
 import { AES } from "crypto-js";
 import { env } from '../../env';
+import { autenticarToken } from "../../middlewares/usuario-token";
+import { permissaoUsuario } from "../../middlewares/permissao-token";
 
 export const createUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
     app.post("/usuario", {
@@ -25,7 +27,7 @@ export const createUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
 
         }
     }, async (req) => {
-        const { nome, email, senha, data } = req.body
+        const { nome, email, senha, data } = req.body;
 
         const senhaCriptografada = AES.encrypt(senha, env.CRYPTO_SECRET).toString()
 

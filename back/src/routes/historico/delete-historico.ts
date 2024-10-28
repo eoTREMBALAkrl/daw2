@@ -6,6 +6,7 @@ import { permissaoUsuario } from "../../middlewares/permissao-token";
 
 export const deleteHistoricoRoutes: FastifyPluginAsyncZod = async function (app) {
     app.delete("/historico", {
+        preHandler: [autenticarToken, permissaoUsuario],
         schema: {
             body: z.object({
                 id: z.coerce.number()

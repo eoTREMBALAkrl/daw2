@@ -6,6 +6,7 @@ import { permissaoUsuario } from "../../middlewares/permissao-token";
 
 export const getRemedioRoutes: FastifyPluginAsyncZod = async function (app) {
     app.get("/remedio",{
+        preHandler: [autenticarToken, permissaoUsuario],
         schema:{
             response:{
                 200: z.object({
