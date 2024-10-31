@@ -1,6 +1,7 @@
 import fastify from "fastify";
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
 import { setupSwagger } from "./config/swaggerConfig"; 
+import cors from "@fastify/cors"
 
 import { createUsuarioRoutes } from "./routes/usuario/create-usuario";
 import { deleteUsuarioRoutes } from "./routes/usuario/delete-usuario";
@@ -31,6 +32,11 @@ const app = fastify().withTypeProvider<ZodTypeProvider>();
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 setupSwagger(app);
+
+app.register(cors,{
+    origin:"*",
+    methods:["GET", "POST", "PUT", "DELETE"]
+})
 
 
 app.register(createUsuarioRoutes);
