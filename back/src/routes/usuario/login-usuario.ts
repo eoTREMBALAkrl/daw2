@@ -4,6 +4,8 @@ import { prisma } from '../../prisma';
 import { AES, enc } from "crypto-js"
 import { env } from '../../env';
 import { geraToken } from '../../config/jwtConfig';
+import { decrypt } from '../../config/crypto';
+import { StatusCodes } from 'http-status-codes';
 
 export const loginUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
     app.post("/login", {
@@ -31,21 +33,23 @@ export const loginUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
                 email
             }
         })
+        
 
         if(!usuario){
             return res.status(404).send("Usuário não encontrado")
         }
 
-        const senhaDescriptografada = AES.decrypt(usuario.senha, env.CRYPTO_SECRET).toString(enc.Utf8);
 
-        if (!usuario || senhaDescriptografada !== senha) {
-            return res.status(401).send('Credenciais inválidas');
+        if (!usuario || senha !== decrypt(usuario.senha)) {
+            return res.status(
+                StatusCodes.NOT_FOUND
+            ).send("Usuário não encontrado");
         }
       
         const token = geraToken(usuario.id);
 
         return {
-            message: "Usuário criado com sucesso!",
+            message: "logado",
             token
         }
     });
