@@ -25,32 +25,18 @@ export const getUsuarioRoutes: FastifyPluginAsyncZod = async function (app) {
             summary: "Listar usuário",
             description: "Rota de listar usuário"
         }
-    }, async (req, res) => {
-        try {
-            const { id } = req.params;
-            console.log("ID recebido1:", id);
-            const usuario = await prisma.usuario.findUnique({
-                where: {
-                    id: Number(id),
-                }
-            });
-         
-            // Verifica se o usuário foi encontrado e está ativo
-            if (!usuario || !usuario.status) {
-                return res.status(404).send({ error: "Usuário não encontrado ou inativo" });
-            }
+    }, async (request) => {
+        const { id } = request.params;
 
-            return res.status(200).send({
-                usuario: {
-                    id: usuario.id,
-                    nome: usuario.nome,
-                    email: usuario.email,
-                    status: usuario.status
-                }
-            });
-        } catch (error) {
-            console.error("Erro ao buscar usuário:", error);
-            return res.status(500).send({ error: "Erro interno no servidor" });
+        const usuario = await prisma.usuario.findUnique({
+            where: {
+                id,
+                status: true
+            }
+        });
+
+        return {
+            usuario
         }
     });
 };
