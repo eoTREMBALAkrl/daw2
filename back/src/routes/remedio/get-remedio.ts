@@ -5,33 +5,34 @@ import { autenticarToken } from "../../middlewares/usuario-token";
 import { permissaoUsuario } from "../../middlewares/permissao-token";
 
 export const getRemedioRoutes: FastifyPluginAsyncZod = async function (app) {
-    app.get("/remedio",{
-        preHandler: [autenticarToken, permissaoUsuario],
-        schema:{
-            response:{
+    app.get("/remedio", {
+        preHandler: [autenticarToken],
+        schema: {
+            response: {
                 200: z.object({
-                    remedio: z.array(z.object({
+                    remedios: z.array(z.object({
                         id: z.number(),
                         nome: z.string(),
                         funcao: z.string(),
                         dosagem: z.string(),
-                        status: z.boolean()
+                        status: z.boolean(),
                     }))
-                }).describe("Lista remedio")
+                }).describe("Lista de remédios")
             },
-            tags: ["Remedio"],
-            summary: "Listar remedio",
-            description: "Rota de listar remedio"
+            tags: ["Remédio"],
+            summary: "Listar remédios",
+            description: "Rota para listar todos os remédios ativos"
         }
-    },async () => {
-        const remedio = await prisma.remedio.findMany({
-            where:{
-                status: true
-            }
-        });
+    }, async (req, res) => {
+        try {
+            // Busca todos os remédios com status ativo
+            const remedios = await prisma.remedio.findMany({
+                where: { status: true }
+            });
 
-        return {
-            remedio
-        };
+            return res.status(200).send({ remedios });
+        } catch (error) {
+            console.error("Erro ao buscar remédios:", error);
+        }
     });
 };

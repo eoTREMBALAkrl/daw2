@@ -5,36 +5,35 @@ import { autenticarToken } from "../../middlewares/usuario-token";
 import { permissaoUsuario } from "../../middlewares/permissao-token";
 
 export const deleteRemedioRoutes: FastifyPluginAsyncZod = async function (app) {
-    app.delete("/remedio", {
-        preHandler: [autenticarToken, permissaoUsuario],
+    app.delete("/remedio/:id", {
+        preHandler: [autenticarToken],
         schema: {
-            body: z.object({
+            params: z.object({
                 id: z.coerce.number()
             }),
-            
             response: {
                 200: z.object({
                     message: z.string()
-                }).describe("Remedio deletado com sucesso")
+                }).describe("Confirmação de deleção lógica")
             },
-            tags:["Remedio"],
-            summary: 'Deletar remedio',
-            description: 'Rota de deletar remedio',
-            
+            tags: ["Remédio"],
+            summary: "Desativar remédio",
+            description: "Rota para desativar um remédio (deleção lógica, alterando status para false)"
         }
-    }, async (req) => {
-        const { id } = req.body
+    }, async (req, res) => {
+        const { id } = req.params;
 
-        await prisma.remedio.update({
-            where: {
-                id
-            },
-            data: {
-                status: false,
-            }
-        });
-        return {
-            message: "Remedio deletado com sucesso!"
+        try {
+            // Tenta desativar o remédio com o ID fornecido
+            const remedioDesativado = await prisma.remedio.update({
+                where: { id: Number(id) },
+                data: { status: false },
+            });
+
+            // Confirmação de que o remédio foi desativado
+            return res.status(200).send({ message: `Remédio '${remedioDesativado.nome}' desativado com sucesso` });
+        } catch (error) {
+            console.error("Erro ao desativar remédio:", error);
         }
-    })
+    });
 };

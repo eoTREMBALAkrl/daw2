@@ -1,49 +1,62 @@
 import { z } from 'zod';
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { prisma } from "../../prisma";
+import { autenticarToken } from '../../middlewares/usuario-token';
 
 
 export const updatePrescricaoRoutes: FastifyPluginAsyncZod = async function (app) {
-    app.put("/prescricao", {
+    app.put("/prescricao/:id", {
+        preHandler: [autenticarToken],
         schema: {
-            body: z.object({
-                id: z.coerce.number().optional(),
-                idUsuario: z.number().optional(),
-                idRemedio: z.number().optional(),
-                observacao: z.string().optional(),
-                frequencia: z.number().optional(),
-                dataInicio: z.date().optional(),
-                dataFim: z.date().optional(),
-            }),
-
-            response: {
-                200: z.object({
-                    message: z.string()
-                }).describe("Prescricao atualizado com sucesso")
-            },
-            tags:["Prescricao"],
-            summary: 'atualizar prescricao',
-            description: 'Rota de atualizar prescricao',
-
+          params: z.object({
+            id: z.coerce.number()
+          }),
+          body: z.object({
+            idUsuario: z.number(),
+            idRemedio: z.number(),
+            observacao: z.string().nullable(),
+            frequencia: z.number(),
+            dataInicio: z.string(),
+            dataFim: z.string(),
+          }),
+          response: {
+            200: z.object({
+              message: z.string(),
+              prescricao: z.object({
+                id: z.number(),
+                idUsuario: z.number(),
+                idRemedio: z.number(),
+                observacao: z.string().nullable(),
+                frequencia: z.number(),
+                dataInicio: z.string(),
+                dataFim: z.string(),
+                status: z.boolean(),
+              })
+            })
+          },
+          tags: ["Prescrição"],
+          summary: "Editar prescrição",
+          description: "Rota para editar uma prescrição específica"
         }
-    }, async (req) => {
-        const { id,idUsuario, idRemedio, observacao,frequencia,dataInicio,dataFim } = req.body;
-
-        await prisma.prescricao.update({
-            where: {
-                id
-            },
+      }, async (req, res) => {
+        const { id } = req.params;
+        const { idUsuario, idRemedio, observacao, frequencia, dataInicio, dataFim } = req.body;
+    
+        try {
+          const prescricaoAtualizada = await prisma.prescricao.update({
+            where: { id: Number(id) },
             data: {
-                idUsuario,
-                idRemedio,
-                observacao,
-                frequencia,
-                dataInicio,
-                dataFim
+              idUsuario,
+              idRemedio,
+              observacao,
+              frequencia,
+              dataInicio: new Date(dataInicio),
+              dataFim: new Date(dataFim),
             }
-        });
-        return {
-            message: "Prescricao atualizado com sucesso!"
+          });
+        } catch (error) {
+          console.error("Erro ao atualizar prescrição:", error);
+          
         }
-    });
+      });
 };

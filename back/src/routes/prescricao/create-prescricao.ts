@@ -7,42 +7,52 @@ import { permissaoUsuario } from "../../middlewares/permissao-token";
 
 export const createPrescricaoRoutes: FastifyPluginAsyncZod = async function (app) {
     app.post("/prescricao", {
-        preHandler: [autenticarToken, permissaoUsuario],
+        preHandler: [autenticarToken],
         schema: {
-            body: z.object({
+          body: z.object({
+            idUsuario: z.number(),
+            idRemedio: z.number(),
+            observacao: z.string().optional(),
+            frequencia: z.number(),
+            dataInicio: z.string(),
+            dataFim: z.string(),
+          }),
+          response: {
+            201: z.object({
+              message: z.string(),
+              prescricao: z.object({
+                id: z.number(),
                 idUsuario: z.number(),
                 idRemedio: z.number(),
-                observacao: z.string().optional(),
+                observacao: z.string().nullable(),
                 frequencia: z.number(),
-                dataInicio: z.date(),
-                dataFim: z.date(),
-            }),
-
-            response: {
-                200: z.object({
-                    message: z.string()
-                }).describe("Prescricao criado com sucesso")
-            },
-            tags:["Prescricao"],
-            summary: 'Criar prescricao',
-            description: 'Rota de criação de prescricao',
-
+                dataInicio: z.string(),
+                dataFim: z.string(),
+                status: z.boolean(),
+              })
+            })
+          },
+          tags: ["Prescrição"],
+          summary: "Adicionar prescrição",
+          description: "Rota para adicionar uma nova prescrição"
         }
-    }, async (req) => {
-        const { idUsuario, idRemedio, observacao,frequencia,dataInicio,dataFim } = req.body;
-
-        await prisma.prescricao.create({
+      }, async (req, res) => {
+        const { idUsuario, idRemedio, observacao, frequencia, dataInicio, dataFim } = req.body;
+    
+        try {
+          const novaPrescricao = await prisma.prescricao.create({
             data: {
-                idUsuario,
-                idRemedio,
-                observacao,
-                frequencia,
-                dataInicio,
-                dataFim
+              idUsuario,
+              idRemedio,
+              observacao,
+              frequencia,
+              dataInicio: new Date(dataInicio),
+              dataFim: new Date(dataFim),
+              status: true,
             }
-        });
-        return {
-            message: "Prescricao criado com sucesso!"
+          });
+        } catch (error) {
+          console.error("Erro ao adicionar prescrição:", error);
         }
-    });
+      });
 };
