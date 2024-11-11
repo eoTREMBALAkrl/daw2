@@ -28,16 +28,16 @@ export const permissaoUsuario = async (
     const token = req.headers["authorization"]?.split(" ")[1] as string;
     const { id } = verificaToken(token);
 
-    if (checkRoute("/prescricao/:idPaciente", "GET")) {
-        {
-            const { idPaciente } = idPacienteSchema.parse(req.params);
-            
-            if (await verificaResponsavel(id, idPaciente)) {
-                return;
-            }
+    if (checkRoute("/prescricao/:id", "GET")) {
+        const { id: userId } = z.object({
+            id: z.coerce.number()
+        }).parse(req.params);
 
-            return res.status(StatusCodes.FORBIDDEN).send({ message: "Rota não permitida" });
+       if (await verificaResponsavel(id, userId)) {
+           return;
         }
+
+       return res.status(StatusCodes.FORBIDDEN).send({ message: "Rota não permitida" });
     }
 
     if (checkRoute("/historico/:idPrescricao", "GET")) {
