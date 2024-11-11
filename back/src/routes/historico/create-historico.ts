@@ -10,8 +10,7 @@ export const createHistoricoRoutes: FastifyPluginAsyncZod = async function (app)
         preHandler: [autenticarToken, permissaoUsuario],
         schema: {
             body: z.object({
-                idPrescricao: z.number(),
-                dataAtual: z.date(),
+                idPrescricao: z.coerce.number().describe("Identificador da prescrição"),
             }),
 
             response: {
@@ -25,12 +24,11 @@ export const createHistoricoRoutes: FastifyPluginAsyncZod = async function (app)
 
         }
     }, async (req) => {
-        const { idPrescricao, dataAtual } = req.body;
+        const { idPrescricao} = req.body;
 
         await prisma.historico.create({
             data: {
-                idPrescricao,
-                dataAtual
+                idPrescricao
             }
         });
         return {
