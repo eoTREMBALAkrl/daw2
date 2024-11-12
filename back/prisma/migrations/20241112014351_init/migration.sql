@@ -35,10 +35,23 @@ CREATE TABLE "prescricao" (
 CREATE TABLE "historico" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "idPrescricao" INTEGER NOT NULL,
-    "dataAtual" DATETIME NOT NULL,
+    "data" DATETIME NOT NULL,
     "status" BOOLEAN NOT NULL DEFAULT true,
     CONSTRAINT "historico_idPrescricao_fkey" FOREIGN KEY ("idPrescricao") REFERENCES "prescricao" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
+-- CreateTable
+CREATE TABLE "paciente_responsavel" (
+    "idPaciente" INTEGER NOT NULL,
+    "idResponsavel" INTEGER NOT NULL,
+
+    PRIMARY KEY ("idPaciente", "idResponsavel"),
+    CONSTRAINT "paciente_responsavel_idPaciente_fkey" FOREIGN KEY ("idPaciente") REFERENCES "usuario" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "paciente_responsavel_idResponsavel_fkey" FOREIGN KEY ("idResponsavel") REFERENCES "usuario" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "usuario_email_key" ON "usuario"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "paciente_responsavel_idPaciente_idResponsavel_key" ON "paciente_responsavel"("idPaciente", "idResponsavel");

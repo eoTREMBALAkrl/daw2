@@ -6,10 +6,10 @@ import { permissaoUsuario } from "../../middlewares/permissao-token";
 
 
 export const createHistoricoRoutes: FastifyPluginAsyncZod = async function (app) {
-    app.post("/historico", {
+    app.post("/historico/:idPrescricao", {
         preHandler: [autenticarToken, permissaoUsuario],
         schema: {
-            body: z.object({
+            params: z.object({
                 idPrescricao: z.coerce.number().describe("Identificador da prescrição"),
             }),
 
@@ -24,11 +24,12 @@ export const createHistoricoRoutes: FastifyPluginAsyncZod = async function (app)
 
         }
     }, async (req) => {
-        const { idPrescricao} = req.body;
-
+        const { idPrescricao} = req.params;
+        
         await prisma.historico.create({
             data: {
-                idPrescricao
+                idPrescricao,
+                data:new Date()
             }
         });
         return {

@@ -8,7 +8,7 @@ export const updateHistoricoRoutes: FastifyPluginAsyncZod = async function (app)
             body: z.object({
                 id: z.coerce.number(),
                 idPrescricao: z.number().optional(),
-                dataAtual: z.date().optional(),
+                data: z.date().optional(),
             }),
 
             response: {
@@ -22,7 +22,7 @@ export const updateHistoricoRoutes: FastifyPluginAsyncZod = async function (app)
 
         }
     }, async (req) => {
-        const { id, idPrescricao, dataAtual} = req.body
+        const { id, idPrescricao, data} = req.body
 
         await prisma.historico.update({
             where: {
@@ -30,7 +30,7 @@ export const updateHistoricoRoutes: FastifyPluginAsyncZod = async function (app)
             },
             data: {
                 idPrescricao,
-                dataAtual
+                data
             }
         });
         return {

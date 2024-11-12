@@ -22,6 +22,7 @@ export const getHistoricoRoutes: FastifyPluginAsyncZod = async function (app) {
               observacao: z.string().nullable(),
               frequencia: z.number(),
               dataInicio: z.date(),
+              data: z.date() // Novo campo de data do histórico
             })
           )
         }).describe("Lista de históricos")
@@ -67,6 +68,7 @@ export const getHistoricoRoutes: FastifyPluginAsyncZod = async function (app) {
         observacao: prescricao.observacao,
         frequencia: prescricao.frequencia,
         dataInicio: prescricao.dataInicio,
+        data: hist.data // Adicionando o campo data do registro de histórico
       };
     });
 

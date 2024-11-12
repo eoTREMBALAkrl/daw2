@@ -47,6 +47,7 @@ model historico {
   id             Int           @id @default(autoincrement())
   prescricao   prescricao      @relation(fields: [idPrescricao], references: [id])
   idPrescricao Int
+  data        DateTime
   status         Boolean       @default(true)
 }
 
