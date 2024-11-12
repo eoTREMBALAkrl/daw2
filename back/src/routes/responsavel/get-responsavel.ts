@@ -10,7 +10,7 @@ export const getResponsavelRoutes: FastifyPluginAsyncZod = async function (app) 
         schema: {
             params: z.object({
                 idPaciente: z.coerce.number(),
-            }), 
+            }),
             response: {
                 200: z.object({
                     responsavel: z.array(
@@ -26,32 +26,32 @@ export const getResponsavelRoutes: FastifyPluginAsyncZod = async function (app) 
             summary: "Listar Responsáveis",
             description: "Esta rota retorna uma lista de responsáveis de um paciente.",
         },
-    }, async (req) => {
+    }, async (req, res) => {
         const { idPaciente } = req.params;
 
-        // Busca as responsabilidades e mapeia apenas {id, name}
-        const responsavel = await prisma.paciente_responsavel.findMany({
-            where: {
-                idPaciente,
-            },
-            include: {
-                responsavel: {
-                    select: {
-                        id: true,
-                        nome: true,
-                        email: true,
+        try {
+            const responsavel = await prisma.paciente_responsavel.findMany({
+                where: { idPaciente },
+                include: {
+                    responsavel: {
+                        select: {
+                            id: true,
+                            nome: true,
+                            email: true,
+                        },
                     },
                 },
-            },
-        });
+            });
 
-        // Extraindo apenas { id, name } de cada responsável
-        const result = responsavel.map(r => ({
-            id: r.responsavel.id,
-            name: r.responsavel.nome,
-            email: r.responsavel.email,
-        }));
+            const result = responsavel.map(r => ({
+                id: r.responsavel.id,
+                nome: r.responsavel.nome,
+                email: r.responsavel.email,
+            }));
 
-        return { responsavel: result };
+            return { responsavel: result };
+        } catch (error) {
+            console.error("Erro ao buscar responsáveis:", error);
+        }
     });
 };
