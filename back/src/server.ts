@@ -21,8 +21,6 @@ import {updatePrescricaoRoutes} from "./routes/prescricao/update-prescricao";
 import {getPrescricaoRoutes} from "./routes/prescricao/get-prescricao";
 
 import {createHistoricoRoutes} from "./routes/historico/create-historico";
-import {deleteHistoricoRoutes} from "./routes/historico/delete-historico";
-import {updateHistoricoRoutes} from "./routes/historico/update-historico";
 import {getHistoricoRoutes} from "./routes/historico/get-historico";
 
 import { createResponsavelRoutes } from "./routes/responsavel/create-responsavel";
@@ -57,8 +55,6 @@ app.register(updatePrescricaoRoutes);
 app.register(getPrescricaoRoutes);
 
 app.register(createHistoricoRoutes);
-app.register(deleteHistoricoRoutes);
-app.register(updateHistoricoRoutes);
 app.register(getHistoricoRoutes);
 
 app.register(createResponsavelRoutes);

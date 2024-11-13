@@ -5,7 +5,6 @@ import { jsonSchemaTransform } from 'fastify-type-provider-zod';
 
 export async function setupSwagger(app: FastifyInstance) {
 
-  // Configurando o Swagger
   app.register(fastifySwagger, {
     openapi: {
       info: {

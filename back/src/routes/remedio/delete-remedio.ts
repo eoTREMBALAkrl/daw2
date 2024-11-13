@@ -14,23 +14,20 @@ export const deleteRemedioRoutes: FastifyPluginAsyncZod = async function (app) {
             response: {
                 200: z.object({
                     message: z.string()
-                }).describe("Confirmação de deleção lógica")
+                }).describe("Confirmação de deletar de maneira lógica")
             },
             tags: ["Remédio"],
             summary: "Desativar remédio",
-            description: "Rota para desativar um remédio (deleção lógica, alterando status para false)"
+            description: "Rota para desativar um remédio"
         }
     }, async (req, res) => {
         const { id } = req.params;
 
         try {
-            // Tenta desativar o remédio com o ID fornecido
             const remedioDesativado = await prisma.remedio.update({
                 where: { id: Number(id) },
                 data: { status: false },
             });
-
-            // Confirmação de que o remédio foi desativado
             return res.status(200).send({ message: `Remédio '${remedioDesativado.nome}' desativado com sucesso` });
         } catch (error) {
             console.error("Erro ao desativar remédio:", error);

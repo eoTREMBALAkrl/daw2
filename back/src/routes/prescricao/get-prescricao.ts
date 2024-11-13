@@ -44,14 +44,12 @@ export const getPrescricaoRoutes: FastifyPluginAsyncZod = async function (app) {
     }, async (req, res) => {
         const { idPaciente } = req.params;
 
-        // Busca os dependentes associados ao paciente
         const dependents = await prisma.paciente_responsavel.findMany({
             where: { idResponsavel: idPaciente },
             select: { idPaciente: true }
         });
         const dependentIds = dependents.map(dependent => dependent.idPaciente);
 
-        // Busca as prescrições para o paciente e dependentes ativos
         const prescricaoResponse = await prisma.prescricao.findMany({
             where: {
                 status: true,
@@ -80,7 +78,6 @@ export const getPrescricaoRoutes: FastifyPluginAsyncZod = async function (app) {
             }
         });
 
-        // Mapeia os dados retornados para o formato correto
         const prescricao = prescricaoResponse.map((prescricao) => {
             return {
                 id: prescricao.id,

@@ -25,7 +25,6 @@ export const getRemedioRoutes: FastifyPluginAsyncZod = async function (app) {
         }
     }, async (req, res) => {
         try {
-            // Busca todos os remédios com status ativo
             const remedios = await prisma.remedio.findMany({
                 where: { status: true }
             });
